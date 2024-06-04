@@ -1116,7 +1116,7 @@ void D_SRB2Main(void)
 
 	mainwads = 0;
 
-#ifndef DEVELOP // md5s last updated 12/14/14
+#if 0 // who cares about md5s
 
 	// Check MD5s of autoloaded files
 	W_VerifyFileMD5(mainwads++, ASSET_HASH_SRB2_SRB); // srb2.srb/srb2.wad
