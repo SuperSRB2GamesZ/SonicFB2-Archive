@@ -134,7 +134,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>$(SonicFB2)</TargetName>
+    <TargetName>SonicFB2</TargetName>
     <OutDir>..\..\..\SRB2-v2125-Installer\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -162,7 +162,7 @@
       <Command>"C:\Program Files\NASM\nasm" -g -o $(IntDir)%(Filename).obj -f win32 "%(FullPath)"</Command>
     </CustomBuild>
     <Link>
-      <OutputFile>$(OutDir)$(SonicFB2)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -486,7 +486,7 @@
     <ClCompile Include="sdl_sound.c" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Srb2SDL.ico" />
+    <Image Include="Srb2icon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
