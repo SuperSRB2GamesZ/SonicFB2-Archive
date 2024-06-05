@@ -453,6 +453,7 @@
     <ClCompile Include="..\string.c">
       <Filter>M_Misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\apng.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afxres.h">
@@ -851,6 +852,7 @@
     <ClInclude Include="..\fastcmp.h">
       <Filter>O_Other</Filter>
     </ClInclude>
+    <ClInclude Include="..\apng.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Srb2win.ico">
