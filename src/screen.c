@@ -416,7 +416,7 @@ void SCR_DisplayTicRate(void)
 
 	if (totaltics <= TICRATE / 2) ticcntcolor = V_REDMAP;
 else if (totaltics <= TICRATE * 0.90) ticcntcolor = V_YELLOWMAP;
-else (totaltics == TICRATE); ticcntcolor = V_GREENMAP;
+else ticcntcolor = V_GREENMAP;
 
 	V_DrawString(vid.width-(24*vid.dupx), vid.height-(16*vid.dupy),
 		V_YELLOWMAP|V_NOSCALESTART, "FPS");
