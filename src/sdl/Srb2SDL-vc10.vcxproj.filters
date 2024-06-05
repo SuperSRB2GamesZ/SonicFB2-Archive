@@ -891,6 +891,8 @@
     <ClCompile Include="..\apng.c" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Srb2icon.png" />
+    <Image Include="Srb2SDL.ico">
+      <Filter>SDLApp</Filter>
+    </Image>
   </ItemGroup>
 </Project>
