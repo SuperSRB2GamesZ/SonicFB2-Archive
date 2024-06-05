@@ -1,6 +1,6 @@
 @echo off
 set BRA=Unknown
-set REV=illegal
+set REV=legal
 
 copy nul: /b +%1\comptime.c tmp.$$$ > nul
 move tmp.$$$ %1\comptime.c > nul
