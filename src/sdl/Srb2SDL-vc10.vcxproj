@@ -134,7 +134,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>$(SonicFB2)</TargetName>
+    <TargetName>SonicFB2</TargetName>
     <OutDir>..\..\..\SRB2-v2125-Installer\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
