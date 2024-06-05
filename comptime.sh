@@ -29,7 +29,7 @@ versionsvn() {
 }
 
 versionfake() {
-	version "Unknown" "illegal";
+	version "Unknown" "legal";
 }
 
 compversion() {
