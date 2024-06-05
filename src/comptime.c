@@ -17,7 +17,7 @@ const char *comprevision = SRB2_COMP_REVISION;
 
 #else
 const char *compbranch = "Unknown";
-const char *comprevision = "illegal";
+const char *comprevision = "legal";
 
 #endif
 
