@@ -17,7 +17,8 @@
 
 #include "endian.h"
 
-#ifndef SRB2_BIG_ENDIAN
+#ifndef 
+_BIG_ENDIAN
 //
 // Little-endian machines
 //

@@ -47,7 +47,8 @@ set(SRB2_CORE_SOURCES
 	z_zone.c
 )
 
-set(SRB2_CORE_HEADERS
+set(
+	_CORE_HEADERS
 	am_map.h
 	b_bot.h
 	byteptr.h
