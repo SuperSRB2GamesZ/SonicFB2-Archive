@@ -408,7 +408,7 @@ static consvar_t cv_dummymares = {"dummymares", "Overall", CV_HIDEN|CV_CALL, dum
 static menuitem_t MainMenu[] =
 {
 	{IT_CALL   |IT_STRING, NULL, "Secrets",     M_SecretsMenu,      76},
-	{IT_CALL   |IT_STRING, NULL, "1  player",   M_SinglePlayerMenu, 84},
+	{IT_CALL   |IT_STRING, NULL, "single player",   M_SinglePlayerMenu, 84},
 	{IT_SUBMENU|IT_STRING, NULL, "multiplayer", &MP_MainDef,        92},
 	{IT_CALL   |IT_STRING, NULL, "options",     M_Options,         100},
 	{IT_CALL   |IT_STRING, NULL, "Addons",      M_Addons,          108},
