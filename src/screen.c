@@ -400,11 +400,11 @@ static tic_t lasttic;
 
 void SCR_DisplayTicRate(void)
 {
+
 	tic_t i;
 	tic_t ontic = I_GetTime();
 	tic_t totaltics = 0;
 	INT32 ticcntcolor = 0;
-	const INT32 h = vid.height - (8 * vid.dupy);
 
 	for (i = lasttic + 1; i < TICRATE + lasttic && i < ontic; ++i)
 		fpsgraph[i % TICRATE] = false;
@@ -416,18 +416,22 @@ void SCR_DisplayTicRate(void)
 			++totaltics;
 
 
+
+
 	if (totaltics <= TICRATE / 2) ticcntcolor = V_REDMAP;
 else if (totaltics <= TICRATE * 0.90) ticcntcolor = V_YELLOWMAP;
 else ticcntcolor = V_GREENMAP;
 
 if (cv_ticrate.value == 2) //compacc couter in 2.1
-	V_DrawString(vid.width-(40*vid.dupx), vid.height-( 8*vid.dupy),
+	V_DrawString(vid.width-(16*vid.dupx), vid.height-( 8*vid.dupy),
 		ticcntcolor|V_NOSCALESTART, va("%02d", totaltics));  
-else if (cv_ticrate.value == 1)  
-V_DrawString(vid.width - (24 * vid.dupx), vid.height - (16 * vid.dupy),
-	V_YELLOWMAP | V_NOSCALESTART, "FPS");
- V_DrawString(vid.width - (40 * vid.dupx), vid.height - (8 * vid.dupy),
-	ticcntcolor | V_NOSCALESTART, va("%02d/%02u", totaltics, TICRATE));
+else if (cv_ticrate.value == 1)
+{
+	V_DrawString(vid.width - (24 * vid.dupx), vid.height - (16 * vid.dupy),
+		V_YELLOWMAP | V_NOSCALESTART, "FPS");
+	V_DrawString(vid.width - (40 * vid.dupx), vid.height - (8 * vid.dupy),
+		ticcntcolor | V_NOSCALESTART, va("%02d/%02u", totaltics, TICRATE));
+}
 
 
 	lasttic = ontic; 
