@@ -162,7 +162,7 @@
       <Command>"C:\Program Files\NASM\nasm" -g -o $(IntDir)%(Filename).obj -f win32 "%(FullPath)"</Command>
     </CustomBuild>
     <Link>
-      <OutputFile>$(OutDir)$(SonicFB2)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

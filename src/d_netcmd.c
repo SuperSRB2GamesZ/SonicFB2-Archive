@@ -58,21 +58,21 @@
 // protos
 // ------
 
-static void Got_NameAndColor(UINT8 **cp, INT32 playernum);
-static void Got_WeaponPref(UINT8 **cp, INT32 playernum);
-static void Got_Mapcmd(UINT8 **cp, INT32 playernum);
-static void Got_ExitLevelcmd(UINT8 **cp, INT32 playernum);
-static void Got_RequestAddfilecmd(UINT8 **cp, INT32 playernum);
+static void Got_NameAndColor(UINT8** cp, INT32 playernum);
+static void Got_WeaponPref(UINT8** cp, INT32 playernum);
+static void Got_Mapcmd(UINT8** cp, INT32 playernum);
+static void Got_ExitLevelcmd(UINT8** cp, INT32 playernum);
+static void Got_RequestAddfilecmd(UINT8** cp, INT32 playernum);
 #ifdef DELFILE
-static void Got_Delfilecmd(UINT8 **cp, INT32 playernum);
+static void Got_Delfilecmd(UINT8** cp, INT32 playernum);
 #endif
-static void Got_Addfilecmd(UINT8 **cp, INT32 playernum);
-static void Got_Pause(UINT8 **cp, INT32 playernum);
-static void Got_Suicide(UINT8 **cp, INT32 playernum);
-static void Got_RandomSeed(UINT8 **cp, INT32 playernum);
-static void Got_RunSOCcmd(UINT8 **cp, INT32 playernum);
-static void Got_Teamchange(UINT8 **cp, INT32 playernum);
-static void Got_Clearscores(UINT8 **cp, INT32 playernum);
+static void Got_Addfilecmd(UINT8** cp, INT32 playernum);
+static void Got_Pause(UINT8** cp, INT32 playernum);
+static void Got_Suicide(UINT8** cp, INT32 playernum);
+static void Got_RandomSeed(UINT8** cp, INT32 playernum);
+static void Got_RunSOCcmd(UINT8** cp, INT32 playernum);
+static void Got_Teamchange(UINT8** cp, INT32 playernum);
+static void Got_Clearscores(UINT8** cp, INT32 playernum);
 
 static void PointLimit_OnChange(void);
 static void TimeLimit_OnChange(void);
@@ -144,12 +144,12 @@ static void Command_Clearscores_f(void);
 // Remote Administration
 static void Command_Changepassword_f(void);
 static void Command_Login_f(void);
-static void Got_Verification(UINT8 **cp, INT32 playernum);
-static void Got_Removal(UINT8 **cp, INT32 playernum);
+static void Got_Verification(UINT8** cp, INT32 playernum);
+static void Got_Removal(UINT8** cp, INT32 playernum);
 static void Command_Verify_f(void);
 static void Command_RemoveAdmin_f(void);
 static void Command_MotD_f(void);
-static void Got_MotD_f(UINT8 **cp, INT32 playernum);
+static void Got_MotD_f(UINT8** cp, INT32 playernum);
 
 static void Command_ShowScores_f(void);
 static void Command_ShowTime_f(void);
@@ -170,204 +170,204 @@ static void Command_Archivetest_f(void);
 void SendWeaponPref(void);
 void SendWeaponPref2(void);
 
-static CV_PossibleValue_t usemouse_cons_t[] = {{0, "Off"}, {1, "On"}, {2, "Force"}, {0, NULL}};
+static CV_PossibleValue_t usemouse_cons_t[] = { {0, "Off"}, {1, "On"}, {2, "Force"}, {0, NULL} };
 #if (defined (__unix__) && !defined (MSDOS)) || defined(__APPLE__) || defined (UNIXCOMMON)
-static CV_PossibleValue_t mouse2port_cons_t[] = {{0, "/dev/gpmdata"}, {1, "/dev/ttyS0"},
-	{2, "/dev/ttyS1"}, {3, "/dev/ttyS2"}, {4, "/dev/ttyS3"}, {0, NULL}};
+static CV_PossibleValue_t mouse2port_cons_t[] = { {0, "/dev/gpmdata"}, {1, "/dev/ttyS0"},
+	{2, "/dev/ttyS1"}, {3, "/dev/ttyS2"}, {4, "/dev/ttyS3"}, {0, NULL} };
 #else
-static CV_PossibleValue_t mouse2port_cons_t[] = {{1, "COM1"}, {2, "COM2"}, {3, "COM3"}, {4, "COM4"},
-	{0, NULL}};
+static CV_PossibleValue_t mouse2port_cons_t[] = { {1, "COM1"}, {2, "COM2"}, {3, "COM3"}, {4, "COM4"},
+	{0, NULL} };
 #endif
 
 #ifdef LJOYSTICK
-static CV_PossibleValue_t joyport_cons_t[] = {{1, "/dev/js0"}, {2, "/dev/js1"}, {3, "/dev/js2"},
-	{4, "/dev/js3"}, {0, NULL}};
+static CV_PossibleValue_t joyport_cons_t[] = { {1, "/dev/js0"}, {2, "/dev/js1"}, {3, "/dev/js2"},
+	{4, "/dev/js3"}, {0, NULL} };
 #else
 // accept whatever value - it is in fact the joystick device number
 #define usejoystick_cons_t NULL
 #endif
 
-static CV_PossibleValue_t autobalance_cons_t[] = {{0, "MIN"}, {4, "MAX"}, {0, NULL}};
-static CV_PossibleValue_t teamscramble_cons_t[] = {{0, "Off"}, {1, "Random"}, {2, "Points"}, {0, NULL}};
+static CV_PossibleValue_t autobalance_cons_t[] = { {0, "MIN"}, {4, "MAX"}, {0, NULL} };
+static CV_PossibleValue_t teamscramble_cons_t[] = { {0, "Off"}, {1, "Random"}, {2, "Points"}, {0, NULL} };
 
-static CV_PossibleValue_t startingliveslimit_cons_t[] = {{1, "MIN"}, {99, "MAX"}, {0, NULL}};
-static CV_PossibleValue_t sleeping_cons_t[] = {{-1, "MIN"}, {1000/TICRATE, "MAX"}, {0, NULL}};
-static CV_PossibleValue_t competitionboxes_cons_t[] = {{0, "Normal"}, {1, "Random"}, {2, "Teleports"},
-	{3, "None"}, {0, NULL}};
+static CV_PossibleValue_t startingliveslimit_cons_t[] = { {1, "MIN"}, {99, "MAX"}, {0, NULL} };
+static CV_PossibleValue_t sleeping_cons_t[] = { {-1, "MIN"}, {1000 / TICRATE, "MAX"}, {0, NULL} };
+static CV_PossibleValue_t competitionboxes_cons_t[] = { {0, "Normal"}, {1, "Random"}, {2, "Teleports"},
+	{3, "None"}, {0, NULL} };
 
-static CV_PossibleValue_t matchboxes_cons_t[] = {{0, "Normal"}, {1, "Random"}, {2, "Non-Random"},
-	{3, "None"}, {0, NULL}};
+static CV_PossibleValue_t matchboxes_cons_t[] = { {0, "Normal"}, {1, "Random"}, {2, "Non-Random"},
+	{3, "None"}, {0, NULL} };
 
-static CV_PossibleValue_t chances_cons_t[] = {{0, "MIN"}, {9, "MAX"}, {0, NULL}};
-static CV_PossibleValue_t match_scoring_cons_t[] = {{0, "Normal"}, {1, "Classic"}, {0, NULL}};
-static CV_PossibleValue_t pause_cons_t[] = {{0, "Server"}, {1, "All"}, {0, NULL}};
+static CV_PossibleValue_t chances_cons_t[] = { {0, "MIN"}, {9, "MAX"}, {0, NULL} };
+static CV_PossibleValue_t match_scoring_cons_t[] = { {0, "Normal"}, {1, "Classic"}, {0, NULL} };
+static CV_PossibleValue_t pause_cons_t[] = { {0, "Server"}, {1, "All"}, {0, NULL} };
 
-static CV_PossibleValue_t timetic_cons_t[] = {{0, "Normal"}, {1, "Centiseconds"}, {2, "Mania"}, {3, "Tics"}, {0, NULL}};
+static CV_PossibleValue_t timetic_cons_t[] = { {0, "Normal"}, {1, "Centiseconds"}, {2, "Mania"}, {3, "Tics"}, {0, NULL} };
 //Using "Normal" instead of 2.2's "Classic" in order to be compatible with people's existing configurations.
 
-static CV_PossibleValue_t  scorepos_cons_t[] = {{0, "Normal"}, {1, "Modern"}, {0, NULL}};
+static CV_PossibleValue_t  scorepos_cons_t[] = { {0, "Normal"}, {1, "Modern"}, {0, NULL} };
 
 #ifdef NETGAME_DEVMODE
-static consvar_t cv_fishcake = {"fishcake", "Off", CV_CALL|CV_NOSHOWHELP|CV_RESTRICT, CV_OnOff, Fishcake_OnChange, 0, NULL, NULL, 0, 0, NULL};
+static consvar_t cv_fishcake = { "fishcake", "Off", CV_CALL | CV_NOSHOWHELP | CV_RESTRICT, CV_OnOff, Fishcake_OnChange, 0, NULL, NULL, 0, 0, NULL };
 #endif
-static consvar_t cv_dummyconsvar = {"dummyconsvar", "Off", CV_CALL|CV_NOSHOWHELP, CV_OnOff,
-	DummyConsvar_OnChange, 0, NULL, NULL, 0, 0, NULL};
+static consvar_t cv_dummyconsvar = { "dummyconsvar", "Off", CV_CALL | CV_NOSHOWHELP, CV_OnOff,
+	DummyConsvar_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_restrictskinchange = {"restrictskinchange", "Yes", CV_NETVAR|CV_CHEAT, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_allowteamchange = {"allowteamchange", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_restrictskinchange = { "restrictskinchange", "Yes", CV_NETVAR | CV_CHEAT, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_allowteamchange = { "allowteamchange", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_startinglives = {"startinglives", "3", CV_NETVAR|CV_CHEAT, startingliveslimit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_startinglives = { "startinglives", "3", CV_NETVAR | CV_CHEAT, startingliveslimit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-static CV_PossibleValue_t respawntime_cons_t[] = {{0, "MIN"}, {30, "MAX"}, {0, NULL}};
-consvar_t cv_respawntime = {"respawndelay", "3", CV_NETVAR|CV_CHEAT, respawntime_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+static CV_PossibleValue_t respawntime_cons_t[] = { {0, "MIN"}, {30, "MAX"}, {0, NULL} };
+consvar_t cv_respawntime = { "respawndelay", "3", CV_NETVAR | CV_CHEAT, respawntime_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_competitionboxes = {"competitionboxes", "Random", CV_NETVAR|CV_CHEAT, competitionboxes_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_competitionboxes = { "competitionboxes", "Random", CV_NETVAR | CV_CHEAT, competitionboxes_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
 #ifdef SEENAMES
-static CV_PossibleValue_t seenames_cons_t[] = {{0, "Off"}, {1, "Colorless"}, {2, "Team"}, {3, "Ally/Foe"}, {0, NULL}};
-consvar_t cv_seenames = {"seenames", "Ally/Foe", CV_SAVE, seenames_cons_t, 0, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_allowseenames = {"allowseenames", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+static CV_PossibleValue_t seenames_cons_t[] = { {0, "Off"}, {1, "Colorless"}, {2, "Team"}, {3, "Ally/Foe"}, {0, NULL} };
+consvar_t cv_seenames = { "seenames", "Ally/Foe", CV_SAVE, seenames_cons_t, 0, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_allowseenames = { "allowseenames", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 #endif
 
 // these are just meant to be saved to the config
-consvar_t cv_playername = {"name", "Sonic", CV_SAVE|CV_CALL|CV_NOINIT, NULL, Name_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_playername2 = {"name2", "Tails", CV_SAVE|CV_CALL|CV_NOINIT, NULL, Name2_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_playername = { "name", "Sonic", CV_SAVE | CV_CALL | CV_NOINIT, NULL, Name_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_playername2 = { "name2", "Tails", CV_SAVE | CV_CALL | CV_NOINIT, NULL, Name2_OnChange, 0, NULL, NULL, 0, 0, NULL };
 // player colors
-consvar_t cv_playercolor = {"color", "Blue", CV_CALL|CV_NOINIT, Color_cons_t, Color_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_playercolor2 = {"color2", "Orange", CV_CALL|CV_NOINIT, Color_cons_t, Color2_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_playercolor = { "color", "Blue", CV_CALL | CV_NOINIT, Color_cons_t, Color_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_playercolor2 = { "color2", "Orange", CV_CALL | CV_NOINIT, Color_cons_t, Color2_OnChange, 0, NULL, NULL, 0, 0, NULL };
 // player's skin, saved for commodity, when using a favorite skins wad..
-consvar_t cv_skin = {"skin", DEFAULTSKIN, CV_CALL|CV_NOINIT, NULL, Skin_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_skin2 = {"skin2", DEFAULTSKIN2, CV_CALL|CV_NOINIT, NULL, Skin2_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_skin = { "skin", DEFAULTSKIN, CV_CALL | CV_NOINIT, NULL, Skin_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_skin2 = { "skin2", DEFAULTSKIN2, CV_CALL | CV_NOINIT, NULL, Skin2_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_skipmapcheck = {"skipmapcheck", "Off", CV_SAVE, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_skipmapcheck = { "skipmapcheck", "Off", CV_SAVE, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
 
 INT32 cv_debug;
 
-consvar_t cv_usemouse = {"use_mouse", "On", CV_SAVE|CV_CALL,usemouse_cons_t, I_StartupMouse, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_usemouse2 = {"use_mouse2", "Off", CV_SAVE|CV_CALL,usemouse_cons_t, I_StartupMouse2, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_usemouse = { "use_mouse", "On", CV_SAVE | CV_CALL,usemouse_cons_t, I_StartupMouse, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_usemouse2 = { "use_mouse2", "Off", CV_SAVE | CV_CALL,usemouse_cons_t, I_StartupMouse2, 0, NULL, NULL, 0, 0, NULL };
 
 #if defined (DC) || defined (_XBOX) || defined (WMINPUT) || defined (_WII) || defined(HAVE_SDL) || defined(_WINDOWS) //joystick 1 and 2
-consvar_t cv_usejoystick = {"use_joystick", "1", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_usejoystick2 = {"use_joystick2", "2", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_usejoystick = { "use_joystick", "1", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_usejoystick2 = { "use_joystick2", "2", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL };
 #elif defined (PSP) || defined (GP2X) || defined (_NDS) //only one joystick
-consvar_t cv_usejoystick = {"use_joystick", "1", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_usejoystick2 = {"use_joystick2", "0", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_usejoystick = { "use_joystick", "1", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_usejoystick2 = { "use_joystick2", "0", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL };
 #else //all esle, no joystick
-consvar_t cv_usejoystick = {"use_joystick", "0", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_usejoystick2 = {"use_joystick2", "0", CV_SAVE|CV_CALL, usejoystick_cons_t,
-	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_usejoystick = { "use_joystick", "0", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_usejoystick2 = { "use_joystick2", "0", CV_SAVE | CV_CALL, usejoystick_cons_t,
+	I_InitJoystick2, 0, NULL, NULL, 0, 0, NULL };
 #endif
 #if (defined (LJOYSTICK) || defined (HAVE_SDL))
 #ifdef LJOYSTICK
-consvar_t cv_joyport = {"joyport", "/dev/js0", CV_SAVE, joyport_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_joyport2 = {"joyport2", "/dev/js0", CV_SAVE, joyport_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL}; //Alam: for later
+consvar_t cv_joyport = { "joyport", "/dev/js0", CV_SAVE, joyport_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_joyport2 = { "joyport2", "/dev/js0", CV_SAVE, joyport_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL }; //Alam: for later
 #endif
-consvar_t cv_joyscale = {"joyscale", "1", CV_SAVE|CV_CALL, NULL, I_JoyScale, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_joyscale2 = {"joyscale2", "1", CV_SAVE|CV_CALL, NULL, I_JoyScale2, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_joyscale = { "joyscale", "1", CV_SAVE | CV_CALL, NULL, I_JoyScale, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_joyscale2 = { "joyscale2", "1", CV_SAVE | CV_CALL, NULL, I_JoyScale2, 0, NULL, NULL, 0, 0, NULL };
 #else
-consvar_t cv_joyscale = {"joyscale", "1", CV_SAVE|CV_HIDEN, NULL, NULL, 0, NULL, NULL, 0, 0, NULL}; //Alam: Dummy for save
-consvar_t cv_joyscale2 = {"joyscale2", "1", CV_SAVE|CV_HIDEN, NULL, NULL, 0, NULL, NULL, 0, 0, NULL}; //Alam: Dummy for save
+consvar_t cv_joyscale = { "joyscale", "1", CV_SAVE | CV_HIDEN, NULL, NULL, 0, NULL, NULL, 0, 0, NULL }; //Alam: Dummy for save
+consvar_t cv_joyscale2 = { "joyscale2", "1", CV_SAVE | CV_HIDEN, NULL, NULL, 0, NULL, NULL, 0, 0, NULL }; //Alam: Dummy for save
 #endif
 #if (defined (__unix__) && !defined (MSDOS)) || defined(__APPLE__) || defined (UNIXCOMMON)
-consvar_t cv_mouse2port = {"mouse2port", "/dev/gpmdata", CV_SAVE, mouse2port_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_mouse2opt = {"mouse2opt", "0", CV_SAVE, NULL, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_mouse2port = { "mouse2port", "/dev/gpmdata", CV_SAVE, mouse2port_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_mouse2opt = { "mouse2opt", "0", CV_SAVE, NULL, NULL, 0, NULL, NULL, 0, 0, NULL };
 #else
-consvar_t cv_mouse2port = {"mouse2port", "COM2", CV_SAVE, mouse2port_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_mouse2port = { "mouse2port", "COM2", CV_SAVE, mouse2port_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 #endif
 
-consvar_t cv_matchboxes = {"matchboxes", "Normal", CV_NETVAR|CV_CHEAT, matchboxes_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_specialrings = {"specialrings", "On", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_powerstones = {"powerstones", "On", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_matchboxes = { "matchboxes", "Normal", CV_NETVAR | CV_CHEAT, matchboxes_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_specialrings = { "specialrings", "On", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_powerstones = { "powerstones", "On", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_recycler =      {"tv_recycler",      "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_teleporters =   {"tv_teleporter",    "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_superring =     {"tv_superring",     "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_supersneakers = {"tv_supersneaker",  "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_invincibility = {"tv_invincibility", "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_jumpshield =    {"tv_jumpshield",    "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_watershield =   {"tv_watershield",   "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_ringshield =    {"tv_ringshield",    "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_forceshield =   {"tv_forceshield",   "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_bombshield =    {"tv_bombshield",    "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_1up =           {"tv_1up",           "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_eggmanbox =     {"tv_eggman",        "5", CV_NETVAR|CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_recycler = { "tv_recycler",      "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_teleporters = { "tv_teleporter",    "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_superring = { "tv_superring",     "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_supersneakers = { "tv_supersneaker",  "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_invincibility = { "tv_invincibility", "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_jumpshield = { "tv_jumpshield",    "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_watershield = { "tv_watershield",   "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_ringshield = { "tv_ringshield",    "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_forceshield = { "tv_forceshield",   "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_bombshield = { "tv_bombshield",    "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_1up = { "tv_1up",           "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_eggmanbox = { "tv_eggman",        "5", CV_NETVAR | CV_CHEAT, chances_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_ringslinger = {"ringslinger", "No", CV_NETVAR|CV_NOSHOWHELP|CV_CALL|CV_CHEAT, CV_YesNo,
-	Ringslinger_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_gravity = {"gravity", "0.5", CV_RESTRICT|CV_FLOAT|CV_CALL, NULL, Gravity_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_ringslinger = { "ringslinger", "No", CV_NETVAR | CV_NOSHOWHELP | CV_CALL | CV_CHEAT, CV_YesNo,
+	Ringslinger_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_gravity = { "gravity", "0.5", CV_RESTRICT | CV_FLOAT | CV_CALL, NULL, Gravity_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_soundtest = {"soundtest", "0", CV_CALL, NULL, SoundTest_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_soundtest = { "soundtest", "0", CV_CALL, NULL, SoundTest_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-static CV_PossibleValue_t minitimelimit_cons_t[] = {{15, "MIN"}, {9999, "MAX"}, {0, NULL}};
-consvar_t cv_countdowntime = {"countdowntime", "60", CV_NETVAR|CV_CHEAT, minitimelimit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+static CV_PossibleValue_t minitimelimit_cons_t[] = { {15, "MIN"}, {9999, "MAX"}, {0, NULL} };
+consvar_t cv_countdowntime = { "countdowntime", "60", CV_NETVAR | CV_CHEAT, minitimelimit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_touchtag = {"touchtag", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_hidetime = {"hidetime", "30", CV_NETVAR|CV_CALL, minitimelimit_cons_t, Hidetime_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_touchtag = { "touchtag", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_hidetime = { "hidetime", "30", CV_NETVAR | CV_CALL, minitimelimit_cons_t, Hidetime_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_autobalance = {"autobalance", "0", CV_NETVAR|CV_CALL, autobalance_cons_t, AutoBalance_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_teamscramble = {"teamscramble", "Off", CV_NETVAR|CV_CALL|CV_NOINIT, teamscramble_cons_t, TeamScramble_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_scrambleonchange = {"scrambleonchange", "Off", CV_NETVAR, teamscramble_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_autobalance = { "autobalance", "0", CV_NETVAR | CV_CALL, autobalance_cons_t, AutoBalance_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_teamscramble = { "teamscramble", "Off", CV_NETVAR | CV_CALL | CV_NOINIT, teamscramble_cons_t, TeamScramble_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_scrambleonchange = { "scrambleonchange", "Off", CV_NETVAR, teamscramble_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_friendlyfire = {"friendlyfire", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_itemfinder = {"itemfinder", "Off", CV_CALL, CV_OnOff, ItemFinder_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_friendlyfire = { "friendlyfire", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_itemfinder = { "itemfinder", "Off", CV_CALL, CV_OnOff, ItemFinder_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
 // Scoring type options
-consvar_t cv_match_scoring = {"matchscoring", "Normal", CV_NETVAR|CV_CHEAT, match_scoring_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_overtime = {"overtime", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_match_scoring = { "matchscoring", "Normal", CV_NETVAR | CV_CHEAT, match_scoring_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_overtime = { "overtime", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_rollingdemos = {"rollingdemos", "On", CV_SAVE, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_rollingdemos = { "rollingdemos", "On", CV_SAVE, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_timetic = {"timerres", "Normal", CV_SAVE, timetic_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL}; // use tics in display
-consvar_t cv_scorepos = {"scorepos", "Normal", CV_SAVE, scorepos_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL}; // for score position
-static CV_PossibleValue_t pointlimit_cons_t[] = {{0, "MIN"}, {999999990, "MAX"}, {0, NULL}};
-consvar_t cv_pointlimit = {"pointlimit", "0", CV_NETVAR|CV_CALL|CV_NOINIT, pointlimit_cons_t,
-	PointLimit_OnChange, 0, NULL, NULL, 0, 0, NULL};
-static CV_PossibleValue_t timelimit_cons_t[] = {{0, "MIN"}, {30, "MAX"}, {0, NULL}};
-consvar_t cv_timelimit = {"timelimit", "0", CV_NETVAR|CV_CALL|CV_NOINIT, timelimit_cons_t,
-	TimeLimit_OnChange, 0, NULL, NULL, 0, 0, NULL};
-static CV_PossibleValue_t numlaps_cons_t[] = {{0, "MIN"}, {50, "MAX"}, {0, NULL}};
-consvar_t cv_numlaps = {"numlaps", "4", CV_NETVAR|CV_CALL|CV_NOINIT, numlaps_cons_t,
-	NumLaps_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_usemapnumlaps = {"usemaplaps", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_timetic = { "timerres", "Normal", CV_SAVE, timetic_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL }; // use tics in display
+consvar_t cv_scorepos = { "scorepos", "Normal", CV_SAVE, scorepos_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL }; // for score position
+static CV_PossibleValue_t pointlimit_cons_t[] = { {0, "MIN"}, {999999990, "MAX"}, {0, NULL} };
+consvar_t cv_pointlimit = { "pointlimit", "0", CV_NETVAR | CV_CALL | CV_NOINIT, pointlimit_cons_t,
+	PointLimit_OnChange, 0, NULL, NULL, 0, 0, NULL };
+static CV_PossibleValue_t timelimit_cons_t[] = { {0, "MIN"}, {30, "MAX"}, {0, NULL} };
+consvar_t cv_timelimit = { "timelimit", "0", CV_NETVAR | CV_CALL | CV_NOINIT, timelimit_cons_t,
+	TimeLimit_OnChange, 0, NULL, NULL, 0, 0, NULL };
+static CV_PossibleValue_t numlaps_cons_t[] = { {0, "MIN"}, {50, "MAX"}, {0, NULL} };
+consvar_t cv_numlaps = { "numlaps", "4", CV_NETVAR | CV_CALL | CV_NOINIT, numlaps_cons_t,
+	NumLaps_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_usemapnumlaps = { "usemaplaps", "Yes", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
 // log elemental hazards -- not a netvar, is local to current player
-consvar_t cv_hazardlog = {"hazardlog", "Yes", 0, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_hazardlog = { "hazardlog", "Yes", 0, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_forceskin = {"forceskin", "-1", CV_NETVAR|CV_CALL|CV_CHEAT, NULL, ForceSkin_OnChange, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_downloading = {"downloading", "On", 0, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_allowexitlevel = {"allowexitlevel", "No", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_forceskin = { "forceskin", "-1", CV_NETVAR | CV_CALL | CV_CHEAT, NULL, ForceSkin_OnChange, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_downloading = { "downloading", "On", 0, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_allowexitlevel = { "allowexitlevel", "No", CV_NETVAR, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_killingdead = {"killingdead", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_killingdead = { "killingdead", "Off", CV_NETVAR, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_netstat = {"netstat", "Off", 0, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL}; // show bandwidth statistics
-static CV_PossibleValue_t nettimeout_cons_t[] = {{TICRATE/7, "MIN"}, {60*TICRATE, "MAX"}, {0, NULL}};
-consvar_t cv_nettimeout = {"nettimeout", "350", CV_CALL|CV_SAVE, nettimeout_cons_t, NetTimeout_OnChange, 0, NULL, NULL, 0, 0, NULL};
-static CV_PossibleValue_t jointimeout_cons_t[] = {{5*TICRATE, "MIN"}, {60*TICRATE, "MAX"}, {0, NULL}};
-consvar_t cv_jointimeout = {"jointimeout", "350", CV_CALL|CV_SAVE, jointimeout_cons_t, JoinTimeout_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_netstat = { "netstat", "Off", 0, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL }; // show bandwidth statistics
+static CV_PossibleValue_t nettimeout_cons_t[] = { {TICRATE / 7, "MIN"}, {60 * TICRATE, "MAX"}, {0, NULL} };
+consvar_t cv_nettimeout = { "nettimeout", "350", CV_CALL | CV_SAVE, nettimeout_cons_t, NetTimeout_OnChange, 0, NULL, NULL, 0, 0, NULL };
+static CV_PossibleValue_t jointimeout_cons_t[] = { {5 * TICRATE, "MIN"}, {60 * TICRATE, "MAX"}, {0, NULL} };
+consvar_t cv_jointimeout = { "jointimeout", "350", CV_CALL | CV_SAVE, jointimeout_cons_t, JoinTimeout_OnChange, 0, NULL, NULL, 0, 0, NULL };
 #ifdef NEWPING
-consvar_t cv_maxping = {"maxping", "0", CV_SAVE, CV_Unsigned, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_maxping = { "maxping", "0", CV_SAVE, CV_Unsigned, NULL, 0, NULL, NULL, 0, 0, NULL };
 #endif
 // Intermission time Tails 04-19-2002
-static CV_PossibleValue_t inttime_cons_t[] = {{0, "MIN"}, {3600, "MAX"}, {0, NULL}};
-consvar_t cv_inttime = {"inttime", "20", CV_NETVAR, inttime_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+static CV_PossibleValue_t inttime_cons_t[] = { {0, "MIN"}, {3600, "MAX"}, {0, NULL} };
+consvar_t cv_inttime = { "inttime", "20", CV_NETVAR, inttime_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-static CV_PossibleValue_t advancemap_cons_t[] = {{0, "Off"}, {1, "Next"}, {2, "Random"}, {0, NULL}};
-consvar_t cv_advancemap = {"advancemap", "Next", CV_NETVAR, advancemap_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-static CV_PossibleValue_t playersforexit_cons_t[] = {{0, "One"}, {1, "All"}, {0, NULL}};
-consvar_t cv_playersforexit = {"playersforexit", "One", CV_NETVAR, playersforexit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
+static CV_PossibleValue_t advancemap_cons_t[] = { {0, "Off"}, {1, "Next"}, {2, "Random"}, {0, NULL} };
+consvar_t cv_advancemap = { "advancemap", "Next", CV_NETVAR, advancemap_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+static CV_PossibleValue_t playersforexit_cons_t[] = { {0, "One"}, {1, "All"}, {0, NULL} };
+consvar_t cv_playersforexit = { "playersforexit", "One", CV_NETVAR, playersforexit_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_runscripts = {"runscripts", "Yes", 0, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_runscripts = { "runscripts", "Yes", 0, CV_YesNo, NULL, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_pause = {"pausepermission", "Server", CV_NETVAR, pause_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL};
-consvar_t cv_mute = {"mute", "Off", CV_NETVAR|CV_CALL, CV_OnOff, Mute_OnChange, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_pause = { "pausepermission", "Server", CV_NETVAR, pause_cons_t, NULL, 0, NULL, NULL, 0, 0, NULL };
+consvar_t cv_mute = { "mute", "Off", CV_NETVAR | CV_CALL, CV_OnOff, Mute_OnChange, 0, NULL, NULL, 0, 0, NULL };
 
-consvar_t cv_sleep = {"cpusleep", "-1", CV_SAVE, sleeping_cons_t, NULL, -1, NULL, NULL, 0, 0, NULL};
-consvar_t cv_freedemocamera = {"freedemocamera", "Off", CV_SAVE, CV_OnOff, NULL};
+consvar_t cv_sleep = { "cpusleep", "-1", CV_SAVE, sleeping_cons_t, NULL, -1, NULL, NULL, 0, 0, NULL };
+consvar_t cv_freedemocamera = { "freedemocamera", "Off", CV_SAVE, CV_OnOff, NULL };
 
 
 INT16 gametype = GT_COOP;
@@ -376,7 +376,7 @@ boolean circuitmap = false;
 INT32 adminplayers[MAXPLAYERS];
 
 /// \warning Keep this up-to-date if you add/remove/rename net text commands
-const char *netxcmdnames[MAXNETXCMD - 1] =
+const char* netxcmdnames[MAXNETXCMD - 1] =
 {
 	"NAMEANDCOLOR",
 	"WEAPONPREF",
@@ -581,7 +581,7 @@ void D_RegisterServerCommands(void)
 #endif
 
 #ifdef SEENAMES
-	 CV_RegisterVar(&cv_allowseenames);
+	CV_RegisterVar(&cv_allowseenames);
 #endif
 
 	CV_RegisterVar(&cv_dummyconsvar);
@@ -790,8 +790,8 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_speed);
 	CV_RegisterVar(&cv_opflags);
 	CV_RegisterVar(&cv_mapthingnum);
-//	CV_RegisterVar(&cv_grid);
-//	CV_RegisterVar(&cv_snapto);
+	//	CV_RegisterVar(&cv_grid);
+	//	CV_RegisterVar(&cv_snapto);
 
 	CV_RegisterVar(&cv_freedemocamera);
 
@@ -836,13 +836,13 @@ void D_RegisterClientCommands(void)
   * \sa CleanupPlayerName, SetPlayerName, Got_NameAndColor
   * \author Graue <graue@oceanbase.org>
   */
-static boolean IsNameGood(char *name, INT32 playernum)
+static boolean IsNameGood(char* name, INT32 playernum)
 {
 	INT32 ix;
 
 	if (strlen(name) == 0 || strlen(name) > MAXPLAYERNAME)
 		return false; // Empty or too long.
-	if (name[0] == ' ' || name[strlen(name)-1] == ' ')
+	if (name[0] == ' ' || name[strlen(name) - 1] == ' ')
 		return false; // Starts or ends with a space.
 	if (isdigit(name[0]))
 		return false; // Starts with a digit.
@@ -876,15 +876,15 @@ static boolean IsNameGood(char *name, INT32 playernum)
 			// name until we no longer have a duplicate.
 			if (len > 1)
 			{
-				name[len-1] = '\0';
-				if (!IsNameGood (name, playernum))
+				name[len - 1] = '\0';
+				if (!IsNameGood(name, playernum))
 					return false;
 			}
 			else if (len == 1) // Agh!
 			{
 				// Last ditch effort...
 				sprintf(name, "%d", M_RandomKey(10));
-				if (!IsNameGood (name, playernum))
+				if (!IsNameGood(name, playernum))
 					return false;
 			}
 			else
@@ -915,11 +915,11 @@ static boolean IsNameGood(char *name, INT32 playernum)
   *     SetPlayerName
   * \author Graue <graue@oceanbase.org>
   */
-static void CleanupPlayerName(INT32 playernum, const char *newname)
+static void CleanupPlayerName(INT32 playernum, const char* newname)
 {
-	char *buf;
-	char *p;
-	char *tmpname = NULL;
+	char* buf;
+	char* p;
+	char* tmpname = NULL;
 	INT32 i;
 	boolean namefailed = true;
 
@@ -944,7 +944,7 @@ static void CleanupPlayerName(INT32 playernum, const char *newname)
 		tmpname = p;
 
 		// Remove trailing spaces.
-		p = &tmpname[strlen(tmpname)-1]; // last character
+		p = &tmpname[strlen(tmpname) - 1]; // last character
 		while (*p == ' ' && p >= tmpname)
 		{
 			*p = '\0';
@@ -960,7 +960,7 @@ static void CleanupPlayerName(INT32 playernum, const char *newname)
 			tmpname[MAXPLAYERNAME] = '\0';
 
 		// Remove trailing spaces again.
-		p = &tmpname[strlen(tmpname)-1]; // last character
+		p = &tmpname[strlen(tmpname) - 1]; // last character
 		while (*p == ' ' && p >= tmpname)
 		{
 			*p = '\0';
@@ -1016,7 +1016,7 @@ static void CleanupPlayerName(INT32 playernum, const char *newname)
   * \sa CleanupPlayerName, IsNameGood
   * \author Graue <graue@oceanbase.org>
   */
-static void SetPlayerName(INT32 playernum, char *newname)
+static void SetPlayerName(INT32 playernum, char* newname)
 {
 	if (IsNameGood(newname, playernum))
 	{
@@ -1030,7 +1030,7 @@ static void SetPlayerName(INT32 playernum, char *newname)
 	}
 	else
 	{
-		CONS_Printf(M_GetText("Player %d sent a bad name change\n"), playernum+1);
+		CONS_Printf(M_GetText("Player %d sent a bad name change\n"), playernum + 1);
 		if (server && netgame)
 		{
 			XBOXSTATIC UINT8 buf[2];
@@ -1063,7 +1063,7 @@ UINT8 CanChangeSkin(INT32 playernum)
 			return true;
 
 		// Can change skin during initial countdown.
-		if ((gametype == GT_RACE || gametype == GT_COMPETITION) && leveltime < 4*TICRATE)
+		if ((gametype == GT_RACE || gametype == GT_COMPETITION) && leveltime < 4 * TICRATE)
 			return true;
 
 		if (G_TagGametype())
@@ -1113,8 +1113,8 @@ static INT32 snacpending = 0, snac2pending = 0, chmappending = 0;
 //
 static void SendNameAndColor(void)
 {
-	XBOXSTATIC char buf[MAXPLAYERNAME+2];
-	char *p;
+	XBOXSTATIC char buf[MAXPLAYERNAME + 2];
+	char* p;
 
 	p = buf;
 
@@ -1139,8 +1139,8 @@ static void SendNameAndColor(void)
 	}
 
 	if (!strcmp(cv_playername.string, player_names[consoleplayer])
-	&& cv_playercolor.value == players[consoleplayer].skincolor
-	&& !strcmp(cv_skin.string, skins[players[consoleplayer].skin].name))
+		&& cv_playercolor.value == players[consoleplayer].skincolor
+		&& !strcmp(cv_skin.string, skins[players[consoleplayer].skin].name))
 		return;
 
 	// We'll handle it later if we're not playing.
@@ -1180,7 +1180,7 @@ static void SendNameAndColor(void)
 			{
 				CV_StealthSetValue(&cv_playercolor, skins[cv_skin.value].prefcolor);
 
-				players[consoleplayer].skincolor = (cv_playercolor.value&0x1F) % MAXSKINCOLORS;
+				players[consoleplayer].skincolor = (cv_playercolor.value & 0x1F) % MAXSKINCOLORS;
 
 				if (players[consoleplayer].mo)
 					players[consoleplayer].mo->color = (UINT8)players[consoleplayer].skincolor;
@@ -1268,7 +1268,7 @@ static void SendNameAndColor2(void)
 		players[secondplaya].skincolor = botcolor;
 		if (players[secondplaya].mo)
 			players[secondplaya].mo->color = players[secondplaya].skincolor;
-		SetPlayerSkinByNum(secondplaya, botskin-1);
+		SetPlayerSkinByNum(secondplaya, botskin - 1);
 		return;
 	}
 	else if (!netgame)
@@ -1304,7 +1304,7 @@ static void SendNameAndColor2(void)
 			{
 				CV_StealthSetValue(&cv_playercolor2, skins[players[secondplaya].skin].prefcolor);
 
-				players[secondplaya].skincolor = (cv_playercolor2.value&0x1F) % MAXSKINCOLORS;
+				players[secondplaya].skincolor = (cv_playercolor2.value & 0x1F) % MAXSKINCOLORS;
 
 				if (players[secondplaya].mo)
 					players[secondplaya].mo->color = players[secondplaya].skincolor;
@@ -1323,10 +1323,10 @@ static void SendNameAndColor2(void)
 	// Don't actually send anything because splitscreen isn't actually allowed in netgames anyway!
 }
 
-static void Got_NameAndColor(UINT8 **cp, INT32 playernum)
+static void Got_NameAndColor(UINT8** cp, INT32 playernum)
 {
-	player_t *p = &players[playernum];
-	char name[MAXPLAYERNAME+1];
+	player_t* p = &players[playernum];
+	char name[MAXPLAYERNAME + 1];
 	UINT8 color, skin;
 
 #ifdef PARANOIA
@@ -1426,11 +1426,11 @@ void SendWeaponPref2(void)
 	SendNetXCmd2(XD_WEAPONPREF, buf, 1);
 }
 
-static void Got_WeaponPref(UINT8 **cp,INT32 playernum)
+static void Got_WeaponPref(UINT8** cp, INT32 playernum)
 {
 	UINT8 prefs = READUINT8(*cp);
 
-	players[playernum].pflags &= ~(PF_FLIPCAM|PF_ANALOGMODE);
+	players[playernum].pflags &= ~(PF_FLIPCAM | PF_ANALOGMODE);
 	if (prefs & 1)
 		players[playernum].pflags |= PF_FLIPCAM;
 	if (prefs & 2)
@@ -1518,7 +1518,7 @@ static void Command_Timedemo_f(void)
 		G_StopMetalDemo();
 
 	// open the demo file
-	strcpy (name, COM_Argv(1));
+	strcpy(name, COM_Argv(1));
 	// dont add .lmp so internal game demos can be played
 
 	CONS_Printf(M_GetText("Timing demo '%s'.\n"), name);
@@ -1569,14 +1569,14 @@ INT32 mapchangepending = 0;
   */
 void D_MapChange(INT32 mapnum, INT32 newgametype, boolean pultmode, boolean resetplayers, INT32 delay, boolean skipprecutscene, boolean FLS)
 {
-	static char buf[2+MAX_WADPATH+1+4];
-	static char *buf_p = buf;
+	static char buf[2 + MAX_WADPATH + 1 + 4];
+	static char* buf_p = buf;
 
 	// The supplied data are assumed to be good.
 	I_Assert(delay >= 0 && delay <= 2);
 
 	CONS_Debug(DBG_GAMELOGIC, "Map change: mapnum=%d gametype=%d ultmode=%d resetplayers=%d delay=%d skipprecutscene=%d\n",
-	           mapnum, newgametype, pultmode, resetplayers, delay, skipprecutscene);
+		mapnum, newgametype, pultmode, resetplayers, delay, skipprecutscene);
 
 	if (netgame || multiplayer)
 		FLS = false;
@@ -1584,7 +1584,7 @@ void D_MapChange(INT32 mapnum, INT32 newgametype, boolean pultmode, boolean rese
 	if (delay != 2)
 	{
 		UINT8 flags = 0;
-		const char *mapname = G_BuildMapName(mapnum);
+		const char* mapname = G_BuildMapName(mapnum);
 
 		I_Assert(W_CheckNumForName(mapname) != LUMPERROR);
 
@@ -1592,11 +1592,11 @@ void D_MapChange(INT32 mapnum, INT32 newgametype, boolean pultmode, boolean rese
 		if (pultmode)
 			flags |= 1;
 		if (!resetplayers)
-			flags |= 1<<1;
+			flags |= 1 << 1;
 		if (skipprecutscene)
-			flags |= 1<<2;
+			flags |= 1 << 2;
 		if (FLS)
-			flags |= 1<<3;
+			flags |= 1 << 3;
 		WRITEUINT8(buf_p, flags);
 
 		// new gametype value
@@ -1615,7 +1615,7 @@ void D_MapChange(INT32 mapnum, INT32 newgametype, boolean pultmode, boolean rese
 		if (!IsPlayerAdmin(consoleplayer))
 		{
 			if (SV_SpawnServer())
-				buf[0] &= ~(1<<1);
+				buf[0] &= ~(1 << 1);
 			if (!Playing()) // you failed to start a server somehow, so cancel the map change
 				return;
 		}
@@ -1655,7 +1655,7 @@ void D_MapChange(INT32 mapnum, INT32 newgametype, boolean pultmode, boolean rese
 //
 static void Command_Map_f(void)
 {
-	const char *mapname;
+	const char* mapname;
 	size_t i;
 	INT32 newmapnum;
 	boolean newresetplayers;
@@ -1704,7 +1704,7 @@ static void Command_Map_f(void)
 
 	mapname = COM_Argv(1);
 	if (strlen(mapname) != 5
-	|| (newmapnum = M_MapNumber(mapname[3], mapname[4])) == 0)
+		|| (newmapnum = M_MapNumber(mapname[3], mapname[4])) == 0)
 	{
 		CONS_Alert(CONS_ERROR, M_GetText("Invalid level name %s\n"), mapname);
 		return;
@@ -1725,11 +1725,11 @@ static void Command_Map_f(void)
 			return;
 		}
 
-		newgametype = G_GetGametypeByName(COM_Argv(i+1));
+		newgametype = G_GetGametypeByName(COM_Argv(i + 1));
 
 		if (newgametype == -1) // reached end of the list with no match
 		{
-			INT32 j = atoi(COM_Argv(i+1)); // assume they gave us a gametype number, which is okay too
+			INT32 j = atoi(COM_Argv(i + 1)); // assume they gave us a gametype number, which is okay too
 			if (j >= 0 && j < NUMGAMETYPES)
 				newgametype = (INT16)j;
 		}
@@ -1740,15 +1740,15 @@ static void Command_Map_f(void)
 		; // The player wants us to trek on anyway.  Do so.
 	// G_TOLFlag handles both multiplayer gametype and ignores it for !multiplayer
 	// Alternatively, bail if the map header is completely missing anyway.
-	else if (!mapheaderinfo[newmapnum-1]
-	 || !(mapheaderinfo[newmapnum-1]->typeoflevel & G_TOLFlag(newgametype)))
+	else if (!mapheaderinfo[newmapnum - 1]
+		|| !(mapheaderinfo[newmapnum - 1]->typeoflevel & G_TOLFlag(newgametype)))
 	{
 		char gametypestring[32] = "Single Player";
 
 		if (multiplayer)
 		{
 			if (newgametype >= 0 && newgametype < NUMGAMETYPES
-			&& Gametype_Names[newgametype])
+				&& Gametype_Names[newgametype])
 				strcpy(gametypestring, Gametype_Names[newgametype]);
 		}
 
@@ -1777,9 +1777,9 @@ static void Command_Map_f(void)
   *                  ::serverplayer or ::adminplayer.
   * \sa D_MapChange
   */
-static void Got_Mapcmd(UINT8 **cp, INT32 playernum)
+static void Got_Mapcmd(UINT8** cp, INT32 playernum)
 {
-	char mapname[MAX_WADPATH+1];
+	char mapname[MAX_WADPATH + 1];
 	UINT8 flags;
 	INT32 resetplayer = 1, lastgametype;
 	UINT8 skipprecutscene, FLS;
@@ -1810,7 +1810,7 @@ static void Got_Mapcmd(UINT8 **cp, INT32 playernum)
 	if (netgame || multiplayer)
 		ultimatemode = false;
 
-	resetplayer = ((flags & (1<<1)) == 0);
+	resetplayer = ((flags & (1 << 1)) == 0);
 
 	lastgametype = gametype;
 	gametype = READUINT8(*cp);
@@ -1818,9 +1818,9 @@ static void Got_Mapcmd(UINT8 **cp, INT32 playernum)
 	if (gametype != lastgametype)
 		D_GameTypeChanged(lastgametype); // emulate consvar_t behavior for gametype
 
-	skipprecutscene = ((flags & (1<<2)) != 0);
+	skipprecutscene = ((flags & (1 << 2)) != 0);
 
-	FLS = ((flags & (1<<3)) != 0);
+	FLS = ((flags & (1 << 3)) != 0);
 
 	READSTRINGN(*cp, mapname, MAX_WADPATH);
 
@@ -1856,7 +1856,7 @@ static void Got_Mapcmd(UINT8 **cp, INT32 playernum)
 
 	if (modeattacking)
 	{
-		SetPlayerSkinByNum(0, cv_chooseskin.value-1);
+		SetPlayerSkinByNum(0, cv_chooseskin.value - 1);
 		players[0].skincolor = skins[players[0].skin].prefcolor;
 		CV_StealthSetValue(&cv_playercolor, players[0].skincolor);
 
@@ -1874,7 +1874,7 @@ static void Got_Mapcmd(UINT8 **cp, INT32 playernum)
 static void Command_Pause(void)
 {
 	XBOXSTATIC UINT8 buf[2];
-	UINT8 *cp = buf;
+	UINT8* cp = buf;
 
 	if (COM_Argc() > 1)
 		WRITEUINT8(cp, (char)(atoi(COM_Argv(1)) != 0));
@@ -1899,10 +1899,10 @@ static void Command_Pause(void)
 		CONS_Printf(M_GetText("Only the server or a remote admin can use this.\n"));
 }
 
-static void Got_Pause(UINT8 **cp, INT32 playernum)
+static void Got_Pause(UINT8** cp, INT32 playernum)
 {
 	UINT8 dedicatedpause = false;
-	const char *playername;
+	const char* playername;
 
 	if (netgame && !cv_pause.value && playernum != serverplayer && !IsPlayerAdmin(playernum))
 	{
@@ -1955,7 +1955,7 @@ static void Got_Pause(UINT8 **cp, INT32 playernum)
 static void Command_Suicide(void)
 {
 	XBOXSTATIC UINT8 buf[4];
-	UINT8 *cp = buf;
+	UINT8* cp = buf;
 
 	WRITEINT32(cp, consoleplayer);
 
@@ -1981,7 +1981,7 @@ static void Command_Suicide(void)
 	SendNetXCmd(XD_SUICIDE, &buf, 4);
 }
 
-static void Got_Suicide(UINT8 **cp, INT32 playernum)
+static void Got_Suicide(UINT8** cp, INT32 playernum)
 {
 	INT32 suicideplayer = READINT32(*cp);
 
@@ -2015,7 +2015,7 @@ static void Got_Suicide(UINT8 **cp, INT32 playernum)
   * \param playernum Player responsible for the message. Must be ::serverplayer.
   * \author Graue <graue@oceanbase.org>
   */
-static void Got_RandomSeed(UINT8 **cp, INT32 playernum)
+static void Got_RandomSeed(UINT8** cp, INT32 playernum)
 {
 	UINT32 seed;
 
@@ -2050,7 +2050,7 @@ static void Command_Clearscores_f(void)
   * \sa XD_CLEARSCORES, Command_Clearscores_f
   * \author SSNTails <http://www.ssntails.org>
   */
-static void Got_Clearscores(UINT8 **cp, INT32 playernum)
+static void Got_Clearscores(UINT8** cp, INT32 playernum)
 {
 	INT32 i;
 
@@ -2168,7 +2168,7 @@ static void Command_Teamchange_f(void)
 		return;
 	}
 
-	usvalue = SHORT(NetPacket.value.l|NetPacket.value.b);
+	usvalue = SHORT(NetPacket.value.l | NetPacket.value.b);
 	SendNetXCmd(XD_TEAMCHANGE, &usvalue, sizeof(usvalue));
 }
 
@@ -2265,7 +2265,7 @@ static void Command_Teamchange2_f(void)
 		return;
 	}
 
-	usvalue = SHORT(NetPacket.value.l|NetPacket.value.b);
+	usvalue = SHORT(NetPacket.value.l | NetPacket.value.b);
 	SendNetXCmd2(XD_TEAMCHANGE, &usvalue, sizeof(usvalue));
 }
 
@@ -2358,9 +2358,9 @@ static void Command_ServerTeamChange_f(void)
 
 	if (G_TagGametype())
 	{
-		if (( (players[NetPacket.packet.playernum].pflags & PF_TAGIT) && NetPacket.packet.newteam == 1) ||
+		if (((players[NetPacket.packet.playernum].pflags & PF_TAGIT) && NetPacket.packet.newteam == 1) ||
 			(!(players[NetPacket.packet.playernum].pflags & PF_TAGIT) && NetPacket.packet.newteam == 2) ||
-			( players[NetPacket.packet.playernum].spectator && !NetPacket.packet.newteam) ||
+			(players[NetPacket.packet.playernum].spectator && !NetPacket.packet.newteam) ||
 			(!players[NetPacket.packet.playernum].spectator && NetPacket.packet.newteam == 3))
 			error = true;
 	}
@@ -2396,12 +2396,12 @@ static void Command_ServerTeamChange_f(void)
 
 	NetPacket.packet.verification = true; // This signals that it's a server change
 
-	usvalue = SHORT(NetPacket.value.l|NetPacket.value.b);
+	usvalue = SHORT(NetPacket.value.l | NetPacket.value.b);
 	SendNetXCmd(XD_TEAMCHANGE, &usvalue, sizeof(usvalue));
 }
 
 //todo: This and the other teamchange functions are getting too long and messy. Needs cleaning.
-static void Got_Teamchange(UINT8 **cp, INT32 playernum)
+static void Got_Teamchange(UINT8** cp, INT32 playernum)
 {
 	changeteam_union NetPacket;
 	boolean error = false;
@@ -2664,9 +2664,9 @@ static void Got_Teamchange(UINT8 **cp, INT32 playernum)
 //
 #define BASESALT "basepasswordstorage"
 
-void D_SetPassword(const char *pw)
+void D_SetPassword(const char* pw)
 {
-	D_MD5PasswordPass((const UINT8 *)pw, strlen(pw), BASESALT, &adminpassmd5);
+	D_MD5PasswordPass((const UINT8*)pw, strlen(pw), BASESALT, &adminpassmd5);
 	adminpasswordset = true;
 }
 
@@ -2700,7 +2700,7 @@ static void Command_Login_f(void)
 	// If we have no MD5 support then completely disable XD_LOGIN responses for security.
 	CONS_Alert(CONS_NOTICE, "Remote administration commands are not supported in this build.\n");
 #else
-	const char *pw;
+	const char* pw;
 
 	if (!netgame)
 	{
@@ -2719,7 +2719,7 @@ static void Command_Login_f(void)
 	pw = COM_Argv(1);
 
 	// Do the base pass to get what the server has (or should?)
-	D_MD5PasswordPass((const UINT8 *)pw, strlen(pw), BASESALT, &netbuffer->u.md5sum);
+	D_MD5PasswordPass((const UINT8*)pw, strlen(pw), BASESALT, &netbuffer->u.md5sum);
 
 	// Do the final pass to get the comparison the server will come up with
 	D_MD5PasswordPass(netbuffer->u.md5sum, 16, va("PNUM%02d", consoleplayer), &netbuffer->u.md5sum);
@@ -2777,7 +2777,7 @@ void RemoveAdminPlayer(INT32 playernum)
 static void Command_Verify_f(void)
 {
 	XBOXSTATIC char buf[8]; // Should be plenty
-	char *temp;
+	char* temp;
 	INT32 playernum;
 
 	if (client)
@@ -2798,7 +2798,7 @@ static void Command_Verify_f(void)
 		return;
 	}
 
-	strlcpy(buf, COM_Argv(1), sizeof (buf));
+	strlcpy(buf, COM_Argv(1), sizeof(buf));
 
 	playernum = atoi(buf);
 
@@ -2810,7 +2810,7 @@ static void Command_Verify_f(void)
 		SendNetXCmd(XD_VERIFIED, buf, 1);
 }
 
-static void Got_Verification(UINT8 **cp, INT32 playernum)
+static void Got_Verification(UINT8** cp, INT32 playernum)
 {
 	INT16 num = READUINT8(*cp);
 
@@ -2839,7 +2839,7 @@ static void Got_Verification(UINT8 **cp, INT32 playernum)
 static void Command_RemoveAdmin_f(void)
 {
 	XBOXSTATIC char buf[8]; // Should be plenty
-	char *temp;
+	char* temp;
 	INT32 playernum;
 
 	if (client)
@@ -2866,7 +2866,7 @@ static void Command_RemoveAdmin_f(void)
 		SendNetXCmd(XD_DEMOTED, buf, 1);
 }
 
-static void Got_Removal(UINT8 **cp, INT32 playernum)
+static void Got_Removal(UINT8** cp, INT32 playernum)
 {
 	INT16 num = READUINT8(*cp);
 
@@ -2895,7 +2895,7 @@ static void Got_Removal(UINT8 **cp, INT32 playernum)
 static void Command_MotD_f(void)
 {
 	size_t i, j;
-	char *mymotd;
+	char* mymotd;
 
 	if ((j = COM_Argc()) < 2)
 	{
@@ -2937,9 +2937,9 @@ static void Command_MotD_f(void)
 	Z_Free(mymotd);
 }
 
-static void Got_MotD_f(UINT8 **cp, INT32 playernum)
+static void Got_MotD_f(UINT8** cp, INT32 playernum)
 {
-	char *mymotd = Z_Malloc(sizeof(motd), PU_STATIC, NULL);
+	char* mymotd = Z_Malloc(sizeof(motd), PU_STATIC, NULL);
 	INT32 i;
 	boolean kick = false;
 
@@ -2975,7 +2975,7 @@ static void Got_MotD_f(UINT8 **cp, INT32 playernum)
 
 static void Command_RunSOC(void)
 {
-	const char *fn;
+	const char* fn;
 	XBOXSTATIC char buf[255];
 	size_t length = 0;
 
@@ -3003,12 +3003,12 @@ static void Command_RunSOC(void)
 	}
 
 	nameonly(strcpy(buf, fn));
-	length = strlen(buf)+1;
+	length = strlen(buf) + 1;
 
 	SendNetXCmd(XD_RUNSOC, buf, length);
 }
 
-static void Got_RunSOCcmd(UINT8 **cp, INT32 playernum)
+static void Got_RunSOCcmd(UINT8** cp, INT32 playernum)
 {
 	char filename[256];
 	filestatus_t ncs = FS_NOTFOUND;
@@ -3032,7 +3032,7 @@ static void Got_RunSOCcmd(UINT8 **cp, INT32 playernum)
 	// Maybe add md5 support?
 	if (strstr(filename, ".soc") != NULL)
 	{
-		ncs = findfile(filename,NULL,true);
+		ncs = findfile(filename, NULL, true);
 
 		if (ncs != FS_FOUND)
 		{
@@ -3040,12 +3040,12 @@ static void Got_RunSOCcmd(UINT8 **cp, INT32 playernum)
 			if (ncs == FS_NOTFOUND)
 			{
 				CONS_Printf(M_GetText("The server tried to add %s,\nbut you don't have this file.\nYou need to find it in order\nto play on this server.\n"), filename);
-				M_StartMessage(va("The server added a file\n(%s)\nthat you do not have.\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+				M_StartMessage(va("The server added a file\n(%s)\nthat you do not have.\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 			}
 			else
 			{
 				CONS_Printf(M_GetText("Unknown error finding soc file (%s) the server added.\n"), filename);
-				M_StartMessage(va("Unknown error trying to load a file\nthat the server added\n(%s).\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+				M_StartMessage(va("Unknown error trying to load a file\nthat the server added\n(%s).\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 			}
 			return;
 		}
@@ -3060,9 +3060,9 @@ static void Got_RunSOCcmd(UINT8 **cp, INT32 playernum)
   */
 static void Command_Addfile(void)
 {
-	const char *fn, *p;
+	const char* fn, * p;
 	XBOXSTATIC char buf[256];
-	char *buf_p = buf;
+	char* buf_p = buf;
 	INT32 i;
 	int musiconly; // W_VerifyNMUSlumps isn't boolean
 
@@ -3099,36 +3099,36 @@ static void Command_Addfile(void)
 		return;
 	}
 
-	p = fn+strlen(fn);
-	while(--p >= fn)
+	p = fn + strlen(fn);
+	while (--p >= fn)
 		if (*p == '\\' || *p == '/' || *p == ':')
 			break;
 	++p;
 	// check total packet size and no of files currently loaded
 	// See W_LoadWadFile in w_wad.c
 	if ((numwadfiles >= MAX_WADFILES)
-	|| ((packetsizetally + nameonlylength(fn) + 22) > MAXFILENEEDED*sizeof(UINT8)))
+		|| ((packetsizetally + nameonlylength(fn) + 22) > MAXFILENEEDED * sizeof(UINT8)))
 	{
 		CONS_Alert(CONS_ERROR, M_GetText("Too many files loaded to add %s\n"), fn);
 		return;
 	}
 
-	WRITESTRINGN(buf_p,p,240);
+	WRITESTRINGN(buf_p, p, 240);
 
 	// calculate and check md5
 	{
 		UINT8 md5sum[16];
 #ifdef NOMD5
-		memset(md5sum,0,16);
+		memset(md5sum, 0, 16);
 #else
-		FILE *fhandle;
+		FILE* fhandle;
 
 		if ((fhandle = W_OpenWadFile(&fn, true)) != NULL)
 		{
 			tic_t t = I_GetTime();
-			CONS_Debug(DBG_SETUP, "Making MD5 for %s\n",fn);
+			CONS_Debug(DBG_SETUP, "Making MD5 for %s\n", fn);
 			md5_stream(fhandle, md5sum);
-			CONS_Debug(DBG_SETUP, "MD5 calc for %s took %f second\n", fn, (float)(I_GetTime() - t)/TICRATE);
+			CONS_Debug(DBG_SETUP, "MD5 calc for %s took %f second\n", fn, (float)(I_GetTime() - t) / TICRATE);
 			fclose(fhandle);
 		}
 		else // file not found
@@ -3188,15 +3188,15 @@ static void Command_Delfile(void)
 }
 #endif
 
-static void Got_RequestAddfilecmd(UINT8 **cp, INT32 playernum)
+static void Got_RequestAddfilecmd(UINT8** cp, INT32 playernum)
 {
 	char filename[241];
 	filestatus_t ncs = FS_NOTFOUND;
 	UINT8 md5sum[16];
 	boolean kick = false;
 	boolean toomany = false;
-	INT32 i,j;
-	serverinfo_pak *dummycheck = NULL;
+	INT32 i, j;
+	serverinfo_pak* dummycheck = NULL;
 
 	// Shut the compiler up.
 	(void)dummycheck;
@@ -3227,10 +3227,10 @@ static void Got_RequestAddfilecmd(UINT8 **cp, INT32 playernum)
 
 	// See W_LoadWadFile in w_wad.c
 	if ((numwadfiles >= MAX_WADFILES)
-	|| ((packetsizetally + nameonlylength(filename) + 22) > MAXFILENEEDED*sizeof(UINT8)))
+		|| ((packetsizetally + nameonlylength(filename) + 22) > MAXFILENEEDED * sizeof(UINT8)))
 		toomany = true;
 	else
-		ncs = findfile(filename,md5sum,true);
+		ncs = findfile(filename, md5sum, true);
 
 	if (ncs != FS_FOUND || toomany)
 	{
@@ -3245,7 +3245,7 @@ static void Got_RequestAddfilecmd(UINT8 **cp, INT32 playernum)
 		else
 			sprintf(message, M_GetText("Unknown error finding wad file (%s)\n"), filename);
 
-		CONS_Printf("%s",message);
+		CONS_Printf("%s", message);
 
 		for (j = 0; j < MAXPLAYERS; j++)
 			if (adminplayers[j])
@@ -3258,7 +3258,7 @@ static void Got_RequestAddfilecmd(UINT8 **cp, INT32 playernum)
 }
 
 #ifdef DELFILE
-static void Got_Delfilecmd(UINT8 **cp, INT32 playernum)
+static void Got_Delfilecmd(UINT8** cp, INT32 playernum)
 {
 	if (playernum != serverplayer && playernum != adminplayer)
 	{
@@ -3284,7 +3284,7 @@ static void Got_Delfilecmd(UINT8 **cp, INT32 playernum)
 }
 #endif
 
-static void Got_Addfilecmd(UINT8 **cp, INT32 playernum)
+static void Got_Addfilecmd(UINT8** cp, INT32 playernum)
 {
 	char filename[241];
 	filestatus_t ncs = FS_NOTFOUND;
@@ -3307,7 +3307,7 @@ static void Got_Addfilecmd(UINT8 **cp, INT32 playernum)
 		return;
 	}
 
-	ncs = findfile(filename,md5sum,true);
+	ncs = findfile(filename, md5sum, true);
 
 	if (ncs != FS_FOUND || !P_AddWadFile(filename))
 	{
@@ -3315,22 +3315,22 @@ static void Got_Addfilecmd(UINT8 **cp, INT32 playernum)
 		if (ncs == FS_FOUND)
 		{
 			CONS_Printf(M_GetText("The server tried to add %s,\nbut you have too many files added.\nRestart the game to clear loaded files\nand play on this server."), filename);
-			M_StartMessage(va("The server added a file \n(%s)\nbut you have too many files added.\nRestart the game to clear loaded files.\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+			M_StartMessage(va("The server added a file \n(%s)\nbut you have too many files added.\nRestart the game to clear loaded files.\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 		}
 		else if (ncs == FS_NOTFOUND)
 		{
 			CONS_Printf(M_GetText("The server tried to add %s,\nbut you don't have this file.\nYou need to find it in order\nto play on this server."), filename);
-			M_StartMessage(va("The server added a file \n(%s)\nthat you do not have.\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+			M_StartMessage(va("The server added a file \n(%s)\nthat you do not have.\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 		}
 		else if (ncs == FS_MD5SUMBAD)
 		{
 			CONS_Printf(M_GetText("Checksum mismatch while loading %s.\nMake sure you have the copy of\nthis file that the server has.\n"), filename);
-			M_StartMessage(va("Checksum mismatch while loading \n%s.\nThe server seems to have a\ndifferent version of this file.\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+			M_StartMessage(va("Checksum mismatch while loading \n%s.\nThe server seems to have a\ndifferent version of this file.\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 		}
 		else
 		{
 			CONS_Printf(M_GetText("Unknown error finding wad file (%s) the server added.\n"), filename);
-			M_StartMessage(va("Unknown error trying to load a file\nthat the server added \n(%s).\n\nPress ESC\n",filename), NULL, MM_NOTHING);
+			M_StartMessage(va("Unknown error trying to load a file\nthat the server added \n(%s).\n\nPress ESC\n", filename), NULL, MM_NOTHING);
 		}
 		return;
 	}
@@ -3341,8 +3341,8 @@ static void Got_Addfilecmd(UINT8 **cp, INT32 playernum)
 static void Command_ListWADS_f(void)
 {
 	INT32 i = numwadfiles;
-	char *tempname;
-	CONS_Printf(M_GetText("There are %d wads loaded:\n"),numwadfiles);
+	char* tempname;
+	CONS_Printf(M_GetText("There are %d wads loaded:\n"), numwadfiles);
 	for (i--; i >= 0; i--)
 	{
 		nameonly(tempname = va("%s", wadfiles[i]->filename));
@@ -3427,7 +3427,7 @@ static void Command_ModDetails_f(void)
 //
 static void Command_ShowGametype_f(void)
 {
-	const char *gametypestr = NULL;
+	const char* gametypestr = NULL;
 
 	if (!(netgame || multiplayer)) // print "Single player" instead of "Co-op"
 	{
@@ -3554,7 +3554,7 @@ static void TimeLimit_OnChange(void)
 
 	if (cv_timelimit.value != 0)
 	{
-		CONS_Printf(M_GetText("Levels will end after %d minute%s.\n"),cv_timelimit.value,cv_timelimit.value == 1 ? "" : "s"); // Graue 11-17-2003
+		CONS_Printf(M_GetText("Levels will end after %d minute%s.\n"), cv_timelimit.value, cv_timelimit.value == 1 ? "" : "s"); // Graue 11-17-2003
 		timelimitintics = cv_timelimit.value * 60 * TICRATE;
 
 		//add hidetime for tag too!
@@ -3580,7 +3580,7 @@ void D_GameTypeChanged(INT32 lastgametype)
 {
 	if (netgame)
 	{
-		const char *oldgt = NULL, *newgt = NULL;
+		const char* oldgt = NULL, * newgt = NULL;
 
 		if (lastgametype >= 0 && lastgametype < NUMGAMETYPES)
 			oldgt = Gametype_Names[lastgametype];
@@ -3601,39 +3601,39 @@ void D_GameTypeChanged(INT32 lastgametype)
 
 		switch (gametype)
 		{
-			case GT_MATCH:
-			case GT_TEAMMATCH:
-				if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
-				{
-					// default settings for match: timelimit 10 mins, no pointlimit
-					CV_SetValue(&cv_pointlimit, 0);
-					CV_SetValue(&cv_timelimit, 10);
-				}
-				if (!cv_itemrespawntime.changed)
-					CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
-				break;
-			case GT_TAG:
-			case GT_HIDEANDSEEK:
-				if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
-				{
-					// default settings for tag: 5 mins, no pointlimit
-					// Note that tag mode also uses an alternate timing mechanism in tandem with timelimit.
-					CV_SetValue(&cv_timelimit, 5);
-					CV_SetValue(&cv_pointlimit, 0);
-				}
-				if (!cv_itemrespawntime.changed)
-					CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
-				break;
-			case GT_CTF:
-				if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
-				{
-					// default settings for CTF: no timelimit, pointlimit 5
-					CV_SetValue(&cv_timelimit, 0);
-					CV_SetValue(&cv_pointlimit, 5);
-				}
-				if (!cv_itemrespawntime.changed)
-					CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
-				break;
+		case GT_MATCH:
+		case GT_TEAMMATCH:
+			if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
+			{
+				// default settings for match: timelimit 10 mins, no pointlimit
+				CV_SetValue(&cv_pointlimit, 0);
+				CV_SetValue(&cv_timelimit, 10);
+			}
+			if (!cv_itemrespawntime.changed)
+				CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
+			break;
+		case GT_TAG:
+		case GT_HIDEANDSEEK:
+			if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
+			{
+				// default settings for tag: 5 mins, no pointlimit
+				// Note that tag mode also uses an alternate timing mechanism in tandem with timelimit.
+				CV_SetValue(&cv_timelimit, 5);
+				CV_SetValue(&cv_pointlimit, 0);
+			}
+			if (!cv_itemrespawntime.changed)
+				CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
+			break;
+		case GT_CTF:
+			if (!cv_timelimit.changed && !cv_pointlimit.changed) // user hasn't changed limits
+			{
+				// default settings for CTF: no timelimit, pointlimit 5
+				CV_SetValue(&cv_timelimit, 0);
+				CV_SetValue(&cv_pointlimit, 5);
+			}
+			if (!cv_itemrespawntime.changed)
+				CV_Set(&cv_itemrespawntime, cv_itemrespawntime.defaultvalue); // respawn normally
+			break;
 		}
 	}
 	else if (!multiplayer && !netgame)
@@ -3716,7 +3716,7 @@ static void Gravity_OnChange(void)
 		return;
 	}
 #ifndef NETGAME_GRAVITY
-	if(netgame)
+	if (netgame)
 	{
 		CV_StealthSet(&cv_gravity, cv_gravity.defaultvalue);
 		return;
@@ -3732,7 +3732,7 @@ static void SoundTest_OnChange(void)
 {
 	if (cv_soundtest.value < 0)
 	{
-		CV_SetValue(&cv_soundtest, NUMSFX-1);
+		CV_SetValue(&cv_soundtest, NUMSFX - 1);
 		return;
 	}
 
@@ -3844,10 +3844,10 @@ retryscramble:
 			{
 				INT16 tempplayer = 0;
 
-				if ((players[scrambleplayers[i-1]].score > players[scrambleplayers[j]].score))
+				if ((players[scrambleplayers[i - 1]].score > players[scrambleplayers[j]].score))
 				{
-					tempplayer = scrambleplayers[i-1];
-					scrambleplayers[i-1] = scrambleplayers[j];
+					tempplayer = scrambleplayers[i - 1];
+					scrambleplayers[i - 1] = scrambleplayers[j];
 					scrambleplayers[j] = tempplayer;
 				}
 			}
@@ -3920,10 +3920,10 @@ static void Command_Showmap_f(void)
 {
 	if (gamestate == GS_LEVEL)
 	{
-		if (mapheaderinfo[gamemap-1]->actnum)
-			CONS_Printf("%s (%d): %s %d\n", G_BuildMapName(gamemap), gamemap, mapheaderinfo[gamemap-1]->lvlttl, mapheaderinfo[gamemap-1]->actnum);
+		if (mapheaderinfo[gamemap - 1]->actnum)
+			CONS_Printf("%s (%d): %s %d\n", G_BuildMapName(gamemap), gamemap, mapheaderinfo[gamemap - 1]->lvlttl, mapheaderinfo[gamemap - 1]->actnum);
 		else
-			CONS_Printf("%s (%d): %s\n", G_BuildMapName(gamemap), gamemap, mapheaderinfo[gamemap-1]->lvlttl);
+			CONS_Printf("%s (%d): %s\n", G_BuildMapName(gamemap), gamemap, mapheaderinfo[gamemap - 1]->lvlttl);
 	}
 	else
 		CONS_Printf(M_GetText("You must be in a level to use this.\n"));
@@ -3936,7 +3936,7 @@ static void Command_Mapmd5_f(void)
 		INT32 i;
 		char md5tmp[33];
 		for (i = 0; i < 16; ++i)
-			sprintf(&md5tmp[i*2], "%02x", mapmd5[i]);
+			sprintf(&md5tmp[i * 2], "%02x", mapmd5[i]);
 		CONS_Printf("%s: %s\n", G_BuildMapName(gamemap), md5tmp);
 	}
 	else
@@ -3949,13 +3949,13 @@ static void Command_ExitLevel_f(void)
 		CONS_Printf(M_GetText("This only works in a netgame.\n"));
 	else if (!(server || (IsPlayerAdmin(consoleplayer))))
 		CONS_Printf(M_GetText("Only the server or a remote admin can use this.\n"));
-	else if (( gamestate != GS_LEVEL && gamestate != GS_CREDITS ) || demoplayback)
+	else if ((gamestate != GS_LEVEL && gamestate != GS_CREDITS) || demoplayback)
 		CONS_Printf(M_GetText("You must be in a level to use this.\n"));
 	else
 		SendNetXCmd(XD_EXITLEVEL, NULL, 0);
 }
 
-static void Got_ExitLevelcmd(UINT8 **cp, INT32 playernum)
+static void Got_ExitLevelcmd(UINT8** cp, INT32 playernum)
 {
 	(void)cp;
 
@@ -4095,12 +4095,12 @@ static void Command_Togglemodified_f(void)
 }
 
 #ifdef HAVE_BLUA
-extern UINT8 *save_p;
+extern UINT8* save_p;
 static void Command_Archivetest_f(void)
 {
-	UINT8 *buf;
+	UINT8* buf;
 	UINT32 i, wrote;
-	thinker_t *th;
+	thinker_t* th;
 	if (gamestate != GS_LEVEL)
 	{
 		CONS_Printf("This command only works in-game, you dummy.\n");
@@ -4111,7 +4111,7 @@ static void Command_Archivetest_f(void)
 	i = 1;
 	for (th = thinkercap.next; th != &thinkercap; th = th->next)
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-			((mobj_t *)th)->mobjnum = i++;
+			((mobj_t*)th)->mobjnum = i++;
 
 	// allocate buffer
 	buf = save_p = ZZ_Alloc(1024);
@@ -4120,7 +4120,7 @@ static void Command_Archivetest_f(void)
 	CONS_Printf("LUA_Archive...\n");
 	LUA_Archive();
 	WRITEUINT8(save_p, 0x7F);
-	wrote = (UINT32)(save_p-buf);
+	wrote = (UINT32)(save_p - buf);
 
 	// clear Lua state, so we can really see what happens!
 	CONS_Printf("Clearing state!\n");
@@ -4131,8 +4131,8 @@ static void Command_Archivetest_f(void)
 	CONS_Printf("LUA_UnArchive...\n");
 	LUA_UnArchive();
 	i = READUINT8(save_p);
-	if (i != 0x7F || wrote != (UINT32)(save_p-buf))
-		CONS_Printf("Savegame corrupted. (write %u, read %u)\n", wrote, (UINT32)(save_p-buf));
+	if (i != 0x7F || wrote != (UINT32)(save_p - buf))
+		CONS_Printf("Savegame corrupted. (write %u, read %u)\n", wrote, (UINT32)(save_p - buf));
 
 	// free buffer
 	Z_Free(buf);
@@ -4153,7 +4153,7 @@ static void ForceSkin_OnChange(void)
 	if ((server || IsPlayerAdmin(consoleplayer)) && (cv_forceskin.value < -1 || cv_forceskin.value >= numskins))
 	{
 		if (cv_forceskin.value == -2)
-			CV_SetValue(&cv_forceskin, numskins-1);
+			CV_SetValue(&cv_forceskin, numskins - 1);
 		else
 		{
 			// hack because I can't restrict this and still allow added skins to be used with forceskin.
@@ -4172,7 +4172,7 @@ static void ForceSkin_OnChange(void)
 		CONS_Printf("The server has lifted the forced skin restrictions.\n");
 	else
 	{
-		CONS_Printf("The server is restricting all players to skin \"%s\".\n",skins[cv_forceskin.value].name);
+		CONS_Printf("The server is restricting all players to skin \"%s\".\n", skins[cv_forceskin.value].name);
 		ForceAllSkins(cv_forceskin.value);
 	}
 }
@@ -4363,6 +4363,6 @@ static void Command_ShowTime_f(void)
 		return;
 	}
 
-	CONS_Printf(M_GetText("The current time is %f.\nThe timelimit is %f\n"), (double)leveltime/TICRATE, (double)timelimitintics/TICRATE);
+	CONS_Printf(M_GetText("The current time is %f.\nThe timelimit is %f\n"), (double)leveltime / TICRATE, (double)timelimitintics / TICRATE);
 }
 
