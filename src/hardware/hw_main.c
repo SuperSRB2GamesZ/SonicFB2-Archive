@@ -116,9 +116,8 @@ consvar_t cv_grfov = {"gr_fov", "90", CV_FLOAT|CV_CALL, grfov_cons_t, CV_grFov_O
 consvar_t cv_grfogdensity = {"gr_fogdensity", "150", CV_CALL|CV_NOINIT, CV_Unsigned,
                              CV_FogDensity_ONChange, 0, NULL, NULL, 0, 0, NULL};
 
-// Unfortunately, this can no longer be saved..
-consvar_t cv_grfiltermode = {"gr_filtermode", "Nearest", CV_CALL, grfiltermode_cons_t,
-                             CV_filtermode_ONChange, 0, NULL, NULL, 0, 0, NULL};
+// Unfortunately, this can no longer be saved.. no it can you stoopid idiot
+consvar_t cv_grfiltermode = { "gr_filtermode", "Nearest", CV_SAVE | CV_CALL, grfiltermode_cons_t, CV_filtermode_ONChange};
 consvar_t cv_granisotropicmode = {"gr_anisotropicmode", "1", CV_CALL, granisotropicmode_cons_t,
                              CV_anisotropic_ONChange, 0, NULL, NULL, 0, 0, NULL};
 //static consvar_t cv_grzbuffer = {"gr_zbuffer", "On", 0, CV_OnOff};
