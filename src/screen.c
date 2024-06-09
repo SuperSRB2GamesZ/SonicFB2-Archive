@@ -426,12 +426,17 @@ else ticcntcolor =  V_FPSCOLORMAP;
 if (cv_ticrate.value == 2) //compacc couter in 2.1
 	V_DrawString(vid.width-(16*vid.dupx), vid.height-( 8*vid.dupy),
 		ticcntcolor|V_NOSCALESTART, va("%02d", totaltics));  
-else if (cv_ticrate.value == 1)
+else if (cv_ticrate.value == 1) //Full counter 21 style
 {
 	V_DrawString(vid.width - (24 * vid.dupx), vid.height - (16 * vid.dupy),
 		V_YELLOWMAP | V_NOSCALESTART, "FPS");
 	V_DrawString(vid.width - (40 * vid.dupx), vid.height - (8 * vid.dupy),
 		ticcntcolor | V_NOSCALESTART, va("%02d/%02u", totaltics, TICRATE));
+}
+else if (cv_ticrate.value == 3) // full counter 22 style
+{
+	V_DrawString(vid.width - (72 * vid.dupx), vid.height - (8 * vid.dupy), V_YELLOWMAP | V_NOSCALESTART, "FPS:"); 
+	V_DrawString(vid.width - (40 * vid.dupx), vid.height - (8* vid.dupy), ticcntcolor|V_NOSCALESTART, va("%02d/%02u", totaltics, TICRATE));
 }
 
 
