@@ -80,7 +80,8 @@ void VS_Print(vsbuf_t *buf, const char *data); // strcats onto the sizebuf
 // variable is modified (using flag CV_CALL).
 
 // flags for console vars
-
+#define CVAR_INIT( ... ) \
+{ __VA_ARGS__, 0, NULL, NULL, {0, {NULL}}, 0U, (char)0, NULL }
 typedef enum
 {
 	CV_SAVE = 1,   // save to config when quit game

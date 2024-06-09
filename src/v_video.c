@@ -41,12 +41,12 @@ UINT8 *screens[5];
 static CV_PossibleValue_t gamma_cons_t[] = {{0, "MIN"}, {4, "MAX"}, {0, NULL}};
 static void CV_usegamma_OnChange(void); 
 
-static CV_PossibleValue_t ticrate_cons_t[] = { {0, "No"}, {1, "Full"}, {2, "Compact"}, {0, NULL} };
+static CV_PossibleValue_t ticrate_cons_t[] = { {0, "No"}, {1, "Full"}, {2, "Compact"}, {0, NULL} }; 
+static CV_PossibleValue_t color_cons_t[] = { { V_GREENMAP, "Green" }, {V_BLUEMAP, "Blue"},{V_ORANGEMAP, "Orange"}, { V_PURPLEMAP, "Purple" }, {V_REDMAP, "Red"}, {V_YELLOWMAP, "Yellow"}, {V_GRAYMAP, "Gray"}, {0, NULL} }; 
 consvar_t cv_ticrate = {"showfps", "No", CV_SAVE, ticrate_cons_t, NULL};
 consvar_t cv_usegamma = {"gamma", "0", CV_SAVE|CV_CALL, gamma_cons_t, CV_usegamma_OnChange, 0, NULL, NULL, 0, 0, NULL};
-
+consvar_t cv_fpscountercolor = { "fpscountercolor", "Green", CV_SAVE, color_cons_t, NULL};
 consvar_t cv_allcaps = {"allcaps", "Off", 0, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
-
 static CV_PossibleValue_t constextsize_cons_t[] = {
 	{V_NOSCALEPATCH, "Small"}, {V_SMALLSCALEPATCH, "Medium"}, {V_MEDSCALEPATCH, "Large"}, {0, "Huge"},
 	{0, NULL}};

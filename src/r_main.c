@@ -1384,7 +1384,8 @@ void R_RegisterEngineStuff(void)
 	CV_RegisterVar(&cv_showhud);
 	CV_RegisterVar(&cv_translucenthud);
 
-	CV_RegisterVar(&cv_maxportals);
+	CV_RegisterVar(&cv_maxportals); 
+	CV_RegisterVar(&cv_fpscountercolor);
 
 	// Default viewheight is changeable,
 	// initialized to standard viewheight

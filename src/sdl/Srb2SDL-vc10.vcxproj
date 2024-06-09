@@ -137,6 +137,10 @@
     <TargetName>SonicFB2</TargetName>
     <OutDir>..\..\..\SRB2-v2125-Installer\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\SRB2-v2125-Installer</OutDir>
+    <TargetName>fb2debug</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -164,6 +168,11 @@
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CustomBuild>
+      <Command>"C:\Program Files\NASM\nasm" -g -o $(IntDir)%(Filename).obj -f win32 "%(FullPath)"</Command>
+    </CustomBuild>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\libpng-src\projects\visualc10\libpng.vcxproj">

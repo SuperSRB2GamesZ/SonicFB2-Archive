@@ -30,6 +30,7 @@
 #include "f_finale.h"
 
 
+
 #if defined (USEASM) && !defined (NORUSEASM)//&& (!defined (_MSC_VER) || (_MSC_VER <= 1200))
 #define RUSEASM //MSC.NET can't patch itself
 #endif
@@ -420,7 +421,7 @@ void SCR_DisplayTicRate(void)
 
 	if (totaltics <= TICRATE / 2) ticcntcolor = V_REDMAP;
 else if (totaltics <= TICRATE * 0.90) ticcntcolor = V_YELLOWMAP;
-else ticcntcolor = V_GREENMAP;
+else ticcntcolor =  V_FPSCOLORMAP;
 
 if (cv_ticrate.value == 2) //compacc couter in 2.1
 	V_DrawString(vid.width-(16*vid.dupx), vid.height-( 8*vid.dupy),
